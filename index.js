@@ -436,12 +436,6 @@ app.get('/api/notificaciones', async (req, res) => {
 
 
 
-// 🚀 Lanzar servidor
-app.listen(PORT, '0.0.0.0', () => {
-  console.log(`🚀 Servidor corriendo en http://0.0.0.0:${PORT}`);
-});
-
-
 app.delete('/api/visitas/:id', async (req, res) => {
   const { id } = req.params;
 
@@ -467,4 +461,11 @@ app.delete('/api/visitas/:id', async (req, res) => {
     console.error('❌ Error al eliminar visita:', error);
     res.status(500).json({ message: 'Error al eliminar visita' });
   }
+});
+
+
+
+// 🚀 Lanzar servidor
+app.listen(PORT, '0.0.0.0', () => {
+  console.log(`🚀 Servidor corriendo en http://0.0.0.0:${PORT}`);
 });
