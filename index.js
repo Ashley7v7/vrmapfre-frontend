@@ -438,7 +438,7 @@ app.get('/api/notificaciones', async (req, res) => {
 
 // 🚀 Lanzar servidor
 app.listen(PORT, '0.0.0.0', () => {
-  console.log(`Servidor corriendo en http://localhost:${PORT}`);
+  console.log(`🚀 Servidor corriendo en http://0.0.0.0:${PORT}`);
 });
 
 
