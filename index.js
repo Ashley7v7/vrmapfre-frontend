@@ -466,5 +466,5 @@ app.delete('/api/visitas/:id', async (req, res) => {
 
 
 app.listen(process.env.PORT, '0.0.0.0', () => {
-  console.log(`✅ Servidor corriendo en http://0.0.0.0:${process.env.PORT}`);
+  console.log(`✅ Servidor corriendo en 0.0.0.0:${process.env.PORT}`);
 });
