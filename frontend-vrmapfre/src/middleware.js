@@ -17,13 +17,14 @@ const verifyToken = (req, res, next) => {
   }
 };
 
-module.exports = { verifyToken };
+// Middleware para verificar el rol
+const verifyRole = (role) => {
+  return (req, res, next) => {
+    if (req.user.role !== role) {
+      return res.status(403).json({ mensaje: 'Acceso denegado. Rol no autorizado' });
+    }
+    next();
+  };
+};
 
-const express = require('express');
-const { verifyToken } = require('./middleware');  // Importa el middleware
-const app = express();
-
-// Ruta protegida que requiere autenticación
-app.get('/ruta-protegida', verifyToken, (req, res) => {
-  res.json({ mensaje: 'Acceso autorizado a la ruta protegida' });
-});
+module.exports = { verifyToken, verifyRole };

@@ -40,10 +40,3 @@
 .read-the-docs {
   color: #888;
 }
-
-/* Quitar fondo amarillo en días del calendario que no tienen evento */
-.fc .fc-daygrid-day,
-.fc .fc-daygrid-day-frame,
-.fc .fc-day-today {
-  background-color: white !important;
-}

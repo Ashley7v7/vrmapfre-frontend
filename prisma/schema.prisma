@@ -8,6 +8,7 @@ datasource db {
 }
 
 
+
 model Usuario {
   id       Int       @id @default(autoincrement())
   nombre   String
@@ -74,10 +75,7 @@ model Visita {
   ingeniero      String?
   fechaCancelacion  DateTime?
   fechaVisitada     DateTime?
-  
-  tipoNegocio    String?  // o enum si quieres
-  tipoVisita     String?
-  poliza         String?
+
 
   correoSuscriptor     String?
   telSuscriptor        String?
