@@ -44,7 +44,7 @@ export default function Login() {
       
 
 
-      if (rol === 'administrador') {
+      if (rol === 'administrador'  || rol === 'administrador') {
         navigate('/ingeniero-dashboard');
       } else if (rol === 'suscriptor') {
         navigate('/suscriptor-dashboard');
