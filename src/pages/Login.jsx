@@ -15,7 +15,7 @@ export default function Login() {
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
-// Forzando redeploy con cambio mínimo
+
   const handleLogin = async (e) => {
     e.preventDefault();
 
