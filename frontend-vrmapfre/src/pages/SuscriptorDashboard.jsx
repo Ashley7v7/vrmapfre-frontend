@@ -25,7 +25,10 @@ export default function SuscriptorDashboard() {
 
     const obtenerNotificaciones = async () => {
       try {
-        const res = await fetch('http://localhost:3000/api/visitas');
+        const API_URL = import.meta.env.VITE_API_URL;
+        const res = await fetch(`${API_URL}/api/visitas`, {
+          credentials: 'include'
+        });
         const visitas = await res.json();
         const visitasLuisaVisitadas = visitas.filter(v =>
           v.estatus === "Visitada" &&

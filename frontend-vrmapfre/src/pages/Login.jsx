@@ -4,6 +4,8 @@ import axios from 'axios';
 import mapfreLogo from '../assets/mapfre-logo.png';
 import sideImage from '../assets/side-illustration.png';
 
+console.log('🌍 ENV desde Login:', import.meta.env.VITE_API_URL);
+
 export default function Login() {
   const navigate = useNavigate();
   const [formData, setFormData] = useState({

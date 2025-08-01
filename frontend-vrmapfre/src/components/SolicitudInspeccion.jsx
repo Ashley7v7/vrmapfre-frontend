@@ -10,7 +10,7 @@ export default function SolicitudInspeccion() {
   const [razonesUnicas, setRazonesUnicas] = useState([]);
 
   useEffect(() => {
-    fetch('http://localhost:3000/api/solicitudes')
+    fetch(`${import.meta.env.VITE_API_URL}/api/solicitudes`)
       .then(res => res.json())
       .then(data => {
         setSolicitudes(data);
@@ -115,15 +115,11 @@ export default function SolicitudInspeccion() {
         {seccionActiva === 'generales' && (
           <div className="bg-gray-50 border rounded p-4 space-y-2">
             <p><strong>Razón Social:</strong> {mostrarCampo(seleccionada.razonSocial)}</p>
-            <p><strong>Monto de Prima:</strong> 
-              {mostrarCampo(seleccionada.monto)} {mostrarCampo(seleccionada.moneda)}
-            </p>
+            <p><strong>Monto de Prima:</strong> {mostrarCampo(seleccionada.monto)} {mostrarCampo(seleccionada.moneda)}</p>
             <p><strong>Giro:</strong> {mostrarCampo(seleccionada.giro)}</p>
             <p><strong>Tipo de Negocio:</strong> {mostrarCampo(seleccionada.tipoNegocio)}</p>
             <p><strong>Póliza:</strong> {mostrarCampo(seleccionada.poliza)}</p>
-            <p>
-              <strong>Vigencia:</strong> {mostrarVigencia(seleccionada.vigenciaInicio, seleccionada.vigenciaTermino)}
-            </p>
+            <p><strong>Vigencia:</strong> {mostrarVigencia(seleccionada.vigenciaInicio, seleccionada.vigenciaTermino)}</p>
 
             <p><strong>Tipo de Visita:</strong> {mostrarCampo(seleccionada.tipoVisita)}</p>
             <p><strong>Suscriptor:</strong> {mostrarCampo(seleccionada.suscriptor)}</p>
@@ -139,11 +135,47 @@ export default function SolicitudInspeccion() {
             <p><strong>Representante Comercial:</strong> {mostrarCampo(seleccionada.representante)}</p>
             <p><strong>Correo del Representante:</strong> {mostrarCampo(seleccionada.correoRepresentante)}</p>
             <p><strong>Teléfono del Representante:</strong> {mostrarCampo(seleccionada.telRepresentante)}</p>
+
+            <p><strong>Uso del Reporte:</strong> {mostrarCampo(seleccionada.usoReporte)}</p>
+
+            {seleccionada.usoReporte === 'Externo' && (
+              <div className="ml-4 border-l-2 border-red-500 pl-4 space-y-1">
+                <p className="font-semibold text-red-700">Compartir con:</p>
+                {(() => {
+                  let compartir = seleccionada.compartirCon;
+
+                  if (!compartir) return <p>No especificado</p>;
+
+                  if (typeof compartir === 'string') {
+                    try {
+                      compartir = JSON.parse(compartir);
+                    } catch (e) {
+                      console.error('❌ Error al parsear compartirCon:', e);
+                      return <p>Error en formato</p>;
+                    }
+                  }
+
+                  return (
+                    <>
+                      {compartir.agente && <p>✔ Agente / Broker</p>}
+                      {compartir.asegurado && <p>✔ Asegurado</p>}
+                      {compartir.coaseguro && <p>✔ Coaseguro</p>}
+                      {compartir.reaseguro && <p>✔ Reaseguro</p>}
+                      {compartir.otros && (
+                        <p>✔ Otros: {mostrarCampo(compartir.otrosTexto || compartir.otrosDetalle)}</p>
+                      )}
+                    </>
+                  );
+                })()}
+              </div>
+            )}
           </div>
         )}
 
 
 
+
+        
 
 
 
@@ -280,6 +312,8 @@ export default function SolicitudInspeccion() {
                   onClick={() => {
                     setSeleccionada(s);
                     console.log("🔍 Datos de solicitud seleccionada:", s);
+                    console.log("🧪 Compartir con:", s.compartirCon);
+                    console.log("📌 Uso del reporte:", s.usoReporte);
                     setSeccionActiva('generales');
                   }}
                 >

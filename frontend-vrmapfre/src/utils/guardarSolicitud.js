@@ -1,7 +1,15 @@
-export async function guardarSolicitudEnVisitasProgramadas(solicitudForm, ubicaciones, contacto, rubrosInteres) {
+console.log('🛠 UsoReporte:', datosFormulario.usoReporte);
+console.log('🛠 CompartirCon:', datosFormulario.compartirCon);
+
+
+export async function guardarSolicitudEnVisitasProgramadas(solicitudForm, ubicaciones, contacto, rubrosInteres,   usoReporte,  compartirCon) {
   try {
     const fechaHoy = new Date().toISOString();
     const suscriptor = localStorage.getItem('nombreCompleto') || 'Sin nombre';
+    if (!compartirCon || typeof compartirCon !== 'object') {
+      compartirCon = {};
+    }
+
 
     const visitas = ubicaciones.map((ubic) => ({
       suscriptor,
@@ -19,10 +27,13 @@ export async function guardarSolicitudEnVisitasProgramadas(solicitudForm, ubicac
       tipoMoneda: ubic.tipoMoneda || 'MXN',
       cp: ubic.cp || '',
       ingeniero: '',
+      
 
 
 
-
+      tipoNegocio: solicitudForm.tipoNegocio || 'No especificado',
+      tipoVisita: solicitudForm.tipoVisita || 'No especificado',
+      poliza: solicitudForm.poliza || 'N/A',
       vigenciaInicio: solicitudForm.vigenciaInicio ? new Date(solicitudForm.vigenciaInicio).toISOString() : null,
       vigenciaTermino: solicitudForm.vigenciaTermino ? new Date(solicitudForm.vigenciaTermino).toISOString() : null,
 
@@ -41,15 +52,23 @@ export async function guardarSolicitudEnVisitasProgramadas(solicitudForm, ubicac
       representante: solicitudForm.representante,
       correoRepresentante: solicitudForm.correoRepresentante,
       telRepresentante: solicitudForm.telRepresentante,
+      usoReporte: usoReporte || 'interno',
+      compartirCon: compartirCon || {}
     }));
 
     console.log('📦 JSON enviado al backend:', JSON.stringify({ visitas }, null, 2));
+    console.log('🚀 CompartirCon:', visitas[0]?.compartirCon); // o visitas.map(v => v.compartirCon) si quieres todos
 
-    const response = await fetch('http://localhost:3000/api/visitas-multiples', {
+
+    const API_URL = import.meta.env.VITE_API_URL;
+
+    const response = await fetch(`${API_URL}/api/visitas-multiples`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ visitas })
+      body: JSON.stringify({ visitas }),
+      credentials: 'include'
     });
+
 
     if (!response.ok) {
       throw new Error('Error al registrar visitas en la base de datos');

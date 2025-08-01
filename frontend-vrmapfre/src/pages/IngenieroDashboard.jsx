@@ -1,7 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import mapfreLogo from '../assets/mapfre-blanco.png';
-import Notificacion from '../components/NotificacionIngeniero';
+import NotificacionIngeniero from '../components/NotificacionIngeniero';
 import toast from 'react-hot-toast';
 
 import TablaVisitas from '../components/TablaVisitas';
@@ -54,7 +54,7 @@ export default function IngenieroDashboard() {
 
     const obtenerNotificaciones = async () => {
       try {
-        const res = await fetch('http://localhost:3000/api/visitas');
+        const res = await fetch(`${import.meta.env.VITE_API_URL}/api/visitas`);
         const visitas = await res.json();
 
         // 👇 Agrega este log
@@ -194,7 +194,7 @@ export default function IngenieroDashboard() {
           <div>
             <div className="flex justify-between items-center mb-4">
               <h1 className="text-3xl font-bold text-gray-800">Bienvenido, Ingeniero de Riesgos</h1>
-              <Notificacion notificaciones={notificaciones} />
+              <NotificacionIngeniero notificaciones={notificaciones} />
             </div>
             <p className="text-lg text-gray-700">Aquí puedes acceder a tus herramientas de evaluación y reportes.</p>
           </div>

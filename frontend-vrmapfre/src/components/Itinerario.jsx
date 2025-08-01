@@ -2,6 +2,8 @@ import React, { useEffect, useState, useRef } from 'react';
 import FullCalendar from '@fullcalendar/react';
 import dayGridPlugin from '@fullcalendar/daygrid';
 import esLocale from '@fullcalendar/core/locales/es';
+const API_URL = import.meta.env.VITE_API_URL;
+
 
 const meses = [
   'Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio',
@@ -26,12 +28,12 @@ export default function Itinerario() {
     const cargarVisitas = async () => {
       try {
         // primero verifica visitas vencidas
-        await fetch('http://localhost:3000/api/verificar-visitas', {
+        await fetch(`${API_URL}/api/verificar-visitas`, {
           method: 'PUT'
         });
 
         // luego carga todas las visitas actualizadas
-        const res = await fetch('http://localhost:3000/api/visitas');
+        const res = await fetch(`${API_URL}/api/visitas`);
         const data = await res.json();
 
         const eventosFormateados = data
@@ -70,7 +72,7 @@ export default function Itinerario() {
 
 
   useEffect(() => {
-    fetch('http://localhost:3000/api/ingenieros')
+    fetch(`${API_URL}/api/ingenieros`)
       .then(res => res.json())
       .then(data => setIngenierosDB(data.map(i => i.nombre)))
       .catch(err => console.error('Error al cargar ingenieros:', err));

@@ -4,6 +4,7 @@ import React, { useState, useEffect } from 'react';
 import { estadosConMunicipios } from '../data/estados_municipios_completo';
 import MapaUbicacion from '../components/MapaUbicacion';
 import { guardarSolicitudEnVisitasProgramadas } from '../utils/guardarSolicitud';
+const API_URL = import.meta.env.VITE_API_URL;
 
 export default function SolicitudVisita() {
   const [seccionActiva, setSeccionActiva] = useState('generales');
@@ -32,6 +33,7 @@ export default function SolicitudVisita() {
     { id: 'generales', label: 'Datos generales' },
     { id: 'contacto', label: 'Datos de contacto' },
     { id: 'interes', label: 'Rubros de interés' },
+    { id: 'usoReporte', label: 'Uso del reporte de Inspección' }, 
     { id: 'ubicaciones', label: 'Ubicaciones a inspeccionar' }
   ];
 
@@ -39,7 +41,15 @@ export default function SolicitudVisita() {
     razonSocial: '', monto: '', giro: '', tipoNegocio: '', poliza: '',
     vigenciaInicio: '', vigenciaTermino: '', coordinador: '', territorial: '', representante: '',
     suscriptor: '', moneda: 'MXN', telSuscriptor: '', correoSuscriptor: '', tipoVisita: '',
-    correoCoordinador: '', telCoordinador: '', correoRepresentante: '', telRepresentante: '', endoso: '', territorialOtra: ''
+    correoCoordinador: '', telCoordinador: '', correoRepresentante: '', telRepresentante: '', endoso: '', territorialOtra: '',  usoReporte: '', 
+    compartirCon: {
+      agente: false,
+      asegurado: false,
+      coaseguro: false,
+      reaseguro: false,
+      otros: false,
+      otrosTexto: ''
+    }
   });
 
   useEffect(() => {
@@ -59,6 +69,17 @@ export default function SolicitudVisita() {
   });
 
   const [rubrosInteres, setRubrosInteres] = useState('');
+
+  const [usoReporte, setUsoReporte] = useState(''); // interno o externo
+  const [compartirCon, setCompartirCon] = useState({
+    agente: false,
+    asegurado: false,
+    coaseguro: false,
+    reaseguro: false,
+    otros: false,
+    otrosTexto: ''
+  });
+
 
   const agregarUbicacion = () => {
     setUbicaciones([
@@ -127,9 +148,18 @@ export default function SolicitudVisita() {
       alert('Por favor completa los campos de tipo de visita, negocio y vigencia');
       return;
     }
+console.log('🛠 UsoReporte:', datosFormulario.usoReporte);
+console.log('🛠 CompartirCon:', datosFormulario.compartirCon);
 
+    await guardarSolicitudEnVisitasProgramadas(
+      datosFormulario,
+      ubicaciones,
+      datosContacto,
+      rubrosInteres,
+      datosFormulario.usoReporte,
+      datosFormulario.compartirCon
+    );
 
-    await guardarSolicitudEnVisitasProgramadas(datosFormulario, ubicaciones, datosContacto, rubrosInteres);
 
 
 
@@ -253,8 +283,6 @@ export default function SolicitudVisita() {
               </select>
             </div>
           </div>
-
-
 
 
           <div>
@@ -530,6 +558,95 @@ export default function SolicitudVisita() {
           ></textarea>
         </form>
       )}
+
+      
+
+
+
+
+      {seccionActiva === 'usoReporte' && (
+        <div className="bg-gray-50 border rounded p-6 space-y-4">
+          <h3 className="text-xl font-semibold text-gray-700 mb-2">Uso del reporte de Inspección</h3>
+
+          {/* Select: Interno o Externo */}
+          <div>
+            <label className="block mb-1 font-medium text-gray-700">Selecciona el uso del reporte:</label>
+            <select
+              value={datosFormulario.usoReporte}
+              onChange={(e) =>
+                setDatosFormulario({ ...datosFormulario, usoReporte: e.target.value })
+              }
+              className="w-full border border-gray-400 rounded px-4 py-2 text-gray-800"
+            >
+              <option value="">Selecciona una opción</option>
+              <option value="Interno">Uso Interno</option>
+              <option value="Externo">Uso Externo</option>
+            </select>
+          </div>
+
+          {/* Checkboxes si es Externo */}
+          {datosFormulario.usoReporte === 'Externo' && (
+            <div className="space-y-2 border-t pt-4">
+              <p className="font-semibold text-gray-700">¿Con quién se compartirá el reporte?</p>
+
+              {[
+                { id: 'agente', label: 'Agente / Broker' },
+                { id: 'asegurado', label: 'Asegurado' },
+                { id: 'coaseguro', label: 'Coaseguro' },
+                { id: 'reaseguro', label: 'Reaseguro' },
+                { id: 'otros', label: 'Otros (especifique)' }
+              ].map((op) => (
+                <label key={op.id} className="flex items-center space-x-2 text-gray-700">
+                  <input
+                    type="checkbox"
+                    checked={datosFormulario.compartirCon[op.id]}
+                    onChange={(e) =>
+                      setDatosFormulario({
+                        ...datosFormulario,
+                        compartirCon: {
+                          ...datosFormulario.compartirCon,
+                          [op.id]: e.target.checked
+                        }
+                      })
+                    }
+                    className="accent-gray-700"
+                  />
+                  <span>{op.label}</span>
+                </label>
+              ))}
+
+              {/* Campo de texto si "otros" está seleccionado */}
+              {datosFormulario.compartirCon.otros && (
+                <div className="mt-2">
+                  <label className="block text-sm text-gray-600">Especificar:</label>
+                  <input
+                    type="text"
+                    value={datosFormulario.compartirCon.otrosTexto}
+                    onChange={(e) =>
+                      setDatosFormulario({
+                        ...datosFormulario,
+                        compartirCon: {
+                          ...datosFormulario.compartirCon,
+                          otrosTexto: e.target.value
+                        }
+                      })
+                    }
+                    className="w-full border border-gray-400 rounded px-3 py-2 text-gray-800"
+                    placeholder="Especificar con quién más se compartirá"
+                  />
+                </div>
+              )}
+            </div>
+          )}
+        </div>
+      )}
+
+
+
+
+
+
+
 
       {seccionActiva === 'ubicaciones' && (
         <form className="space-y-6">

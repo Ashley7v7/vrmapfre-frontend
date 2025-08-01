@@ -1,7 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import { estadosConMunicipios } from '../data/estados_municipios_completo';
+const API_URL = import.meta.env.VITE_API_URL;
+
 
 export default function TablaVisitas() {
+
   const [visitas, setVisitas] = useState([]);
   const [filtros, setFiltros] = useState({});
   const [orden, setOrden] = useState({ campo: '', direccion: '' });
@@ -18,7 +21,7 @@ export default function TablaVisitas() {
 
   const cargarVisitas = async () => {
     try {
-      const res = await fetch('http://localhost:3000/api/visitas');
+      const res = await fetch(`${API_URL}/api/visitas`);
       const data = await res.json();
       setVisitas(data); // 👈 Aquí está lo importante
     } catch (error) {
@@ -34,7 +37,7 @@ export default function TablaVisitas() {
 
 
   useEffect(() => {
-    fetch('http://localhost:3000/api/ingenieros')
+    fetch(`${API_URL}/api/ingenieros`)
       .then((res) => res.json())
       .then((data) => {
         setIngenieros(data.map((i) => i.nombre));
@@ -46,7 +49,7 @@ export default function TablaVisitas() {
     if (!window.confirm('¿Estás seguro de que deseas eliminar esta visita?')) return;
 
     try {
-      const res = await fetch(`http://localhost:3000/api/visitas/${id}`, {
+      const res = await fetch(`${API_URL}/api/visitas/${id}`, {
         method: 'DELETE'
       });
 
@@ -69,7 +72,7 @@ export default function TablaVisitas() {
       const fechaForzada = new Date(`${nuevaFecha}T12:00:00`).toISOString();
 
       // Actualiza en backend
-      const res = await fetch(`http://localhost:3000/api/visitas/${id}`, {
+      const res = await fetch(`${API_URL}/api/visitas/${id}`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -150,7 +153,7 @@ export default function TablaVisitas() {
 
       console.log("📤 Payload enviado al backend:", payload);
 
-      const res = await fetch(`http://localhost:3000/api/visitas/${id}`, {
+      const res = await fetch(`${API_URL}/api/visitas/${id}`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(payload)
