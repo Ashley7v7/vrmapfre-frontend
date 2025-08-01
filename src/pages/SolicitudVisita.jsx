@@ -148,9 +148,18 @@ export default function SolicitudVisita() {
       alert('Por favor completa los campos de tipo de visita, negocio y vigencia');
       return;
     }
+console.log('🛠 UsoReporte:', datosFormulario.usoReporte);
+console.log('🛠 CompartirCon:', datosFormulario.compartirCon);
 
+    await guardarSolicitudEnVisitasProgramadas(
+      datosFormulario,
+      ubicaciones,
+      datosContacto,
+      rubrosInteres,
+      datosFormulario.usoReporte,
+      datosFormulario.compartirCon
+    );
 
-    await guardarSolicitudEnVisitasProgramadas(datosFormulario, ubicaciones, datosContacto, rubrosInteres);
 
 
 
@@ -274,8 +283,6 @@ export default function SolicitudVisita() {
               </select>
             </div>
           </div>
-
-
 
 
           <div>
@@ -553,120 +560,6 @@ export default function SolicitudVisita() {
       )}
 
       
-      {seccionActiva === 'uso' && (
-        <div className="bg-gray-50 border rounded p-6 space-y-4">
-          <div>
-            <label className="block text-gray-700 font-semibold mb-1">Uso del Reporte:</label>
-            <select
-              className="w-full border border-gray-300 rounded px-4 py-2"
-              value={formulario.usoReporte}
-              onChange={(e) =>
-                setFormulario({ ...formulario, usoReporte: e.target.value })
-              }
-            >
-              <option value="">Selecciona una opción</option>
-              <option value="Interno">Uso Interno</option>
-              <option value="Externo">Uso Externo</option>
-            </select>
-          </div>
-
-          {formulario.usoReporte === 'Externo' && (
-            <div className="space-y-3 border-t pt-4">
-              <label className="block text-gray-700 font-semibold">¿Con quién se compartirá?</label>
-
-              <div className="space-y-2">
-                <label className="block">
-                  <input
-                    type="checkbox"
-                    className="mr-2"
-                    checked={formulario.compartirCon.agente}
-                    onChange={(e) =>
-                      setFormulario({
-                        ...formulario,
-                        compartirCon: { ...formulario.compartirCon, agente: e.target.checked },
-                      })
-                    }
-                  />
-                  Agente / Broker
-                </label>
-                <label className="block">
-                  <input
-                    type="checkbox"
-                    className="mr-2"
-                    checked={formulario.compartirCon.asegurado}
-                    onChange={(e) =>
-                      setFormulario({
-                        ...formulario,
-                        compartirCon: { ...formulario.compartirCon, asegurado: e.target.checked },
-                      })
-                    }
-                  />
-                  Asegurado
-                </label>
-                <label className="block">
-                  <input
-                    type="checkbox"
-                    className="mr-2"
-                    checked={formulario.compartirCon.coaseguro}
-                    onChange={(e) =>
-                      setFormulario({
-                        ...formulario,
-                        compartirCon: { ...formulario.compartirCon, coaseguro: e.target.checked },
-                      })
-                    }
-                  />
-                  Coaseguro
-                </label>
-                <label className="block">
-                  <input
-                    type="checkbox"
-                    className="mr-2"
-                    checked={formulario.compartirCon.reaseguro}
-                    onChange={(e) =>
-                      setFormulario({
-                        ...formulario,
-                        compartirCon: { ...formulario.compartirCon, reaseguro: e.target.checked },
-                      })
-                    }
-                  />
-                  Reaseguro
-                </label>
-                <label className="block">
-                  <input
-                    type="checkbox"
-                    className="mr-2"
-                    checked={formulario.compartirCon.otros}
-                    onChange={(e) =>
-                      setFormulario({
-                        ...formulario,
-                        compartirCon: { ...formulario.compartirCon, otros: e.target.checked },
-                      })
-                    }
-                  />
-                  Otros
-                </label>
-                {formulario.compartirCon.otros && (
-                  <input
-                    type="text"
-                    placeholder="Especifique..."
-                    className="mt-2 w-full px-3 py-2 border border-gray-300 rounded"
-                    value={formulario.compartirCon.otrosTexto}
-                    onChange={(e) =>
-                      setFormulario({
-                        ...formulario,
-                        compartirCon: {
-                          ...formulario.compartirCon,
-                          otrosTexto: e.target.value,
-                        },
-                      })
-                    }
-                  />
-                )}
-              </div>
-            </div>
-          )}
-        </div>
-      )}
 
 
 

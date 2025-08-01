@@ -1,11 +1,20 @@
-export async function guardarSolicitudEnVisitasProgramadas(solicitudForm, ubicaciones, contacto, rubrosInteres) {
+console.log('🛠 UsoReporte:', datosFormulario.usoReporte);
+console.log('🛠 CompartirCon:', datosFormulario.compartirCon);
+console.log('🚀 Enviando usoReporte y compartirCon:', usoReporte, compartirCon);
+
+
+export async function guardarSolicitudEnVisitasProgramadas(solicitudForm, ubicaciones, contacto, rubrosInteres,   usoReporte,  compartirCon) {
   try {
     const fechaHoy = new Date().toISOString();
     const suscriptor = localStorage.getItem('nombreCompleto') || 'Sin nombre';
+    if (!compartirCon || typeof compartirCon !== 'object') {
+      compartirCon = {};
+    }
+
 
     const visitas = ubicaciones.map((ubic) => ({
       suscriptor,
-      asegurado: solicitudForm.razonSocial || 'No especificado',
+      asegurado: solicitudForm.razonSocial || 'No especificado',  // aquí renombras
       direccion: ubic.direccion || '',
       ciudad: ubic.municipio || '',
       municipio: ubic.municipio || '',
@@ -19,10 +28,13 @@ export async function guardarSolicitudEnVisitasProgramadas(solicitudForm, ubicac
       tipoMoneda: ubic.tipoMoneda || 'MXN',
       cp: ubic.cp || '',
       ingeniero: '',
+      
 
 
 
-
+      tipoNegocio: solicitudForm.tipoNegocio || 'No especificado',
+      tipoVisita: solicitudForm.tipoVisita || 'No especificado',
+      poliza: solicitudForm.poliza || 'N/A',
       vigenciaInicio: solicitudForm.vigenciaInicio ? new Date(solicitudForm.vigenciaInicio).toISOString() : null,
       vigenciaTermino: solicitudForm.vigenciaTermino ? new Date(solicitudForm.vigenciaTermino).toISOString() : null,
 
@@ -41,9 +53,13 @@ export async function guardarSolicitudEnVisitasProgramadas(solicitudForm, ubicac
       representante: solicitudForm.representante,
       correoRepresentante: solicitudForm.correoRepresentante,
       telRepresentante: solicitudForm.telRepresentante,
+      usoReporte: usoReporte || 'interno',
+      compartirCon: compartirCon || {}
     }));
 
     console.log('📦 JSON enviado al backend:', JSON.stringify({ visitas }, null, 2));
+    console.log('🚀 CompartirCon:', visitas[0]?.compartirCon); // o visitas.map(v => v.compartirCon) si quieres todos
+
 
     const API_URL = import.meta.env.VITE_API_URL;
 
