@@ -41,7 +41,15 @@ export default function SolicitudVisita() {
     razonSocial: '', monto: '', giro: '', tipoNegocio: '', poliza: '',
     vigenciaInicio: '', vigenciaTermino: '', coordinador: '', territorial: '', representante: '',
     suscriptor: '', moneda: 'MXN', telSuscriptor: '', correoSuscriptor: '', tipoVisita: '',
-    correoCoordinador: '', telCoordinador: '', correoRepresentante: '', telRepresentante: '', endoso: '', territorialOtra: ''
+    correoCoordinador: '', telCoordinador: '', correoRepresentante: '', telRepresentante: '', endoso: '', territorialOtra: '',  usoReporte: '', 
+    compartirCon: {
+      agente: false,
+      asegurado: false,
+      coaseguro: false,
+      reaseguro: false,
+      otros: false,
+      otrosTexto: ''
+    }
   });
 
   useEffect(() => {
@@ -61,6 +69,17 @@ export default function SolicitudVisita() {
   });
 
   const [rubrosInteres, setRubrosInteres] = useState('');
+
+  const [usoReporte, setUsoReporte] = useState(''); // interno o externo
+  const [compartirCon, setCompartirCon] = useState({
+    agente: false,
+    asegurado: false,
+    coaseguro: false,
+    reaseguro: false,
+    otros: false,
+    otrosTexto: ''
+  });
+
 
   const agregarUbicacion = () => {
     setUbicaciones([
@@ -532,6 +551,208 @@ export default function SolicitudVisita() {
           ></textarea>
         </form>
       )}
+
+      
+      {seccionActiva === 'uso' && (
+        <div className="bg-gray-50 border rounded p-6 space-y-4">
+          <div>
+            <label className="block text-gray-700 font-semibold mb-1">Uso del Reporte:</label>
+            <select
+              className="w-full border border-gray-300 rounded px-4 py-2"
+              value={formulario.usoReporte}
+              onChange={(e) =>
+                setFormulario({ ...formulario, usoReporte: e.target.value })
+              }
+            >
+              <option value="">Selecciona una opción</option>
+              <option value="Interno">Uso Interno</option>
+              <option value="Externo">Uso Externo</option>
+            </select>
+          </div>
+
+          {formulario.usoReporte === 'Externo' && (
+            <div className="space-y-3 border-t pt-4">
+              <label className="block text-gray-700 font-semibold">¿Con quién se compartirá?</label>
+
+              <div className="space-y-2">
+                <label className="block">
+                  <input
+                    type="checkbox"
+                    className="mr-2"
+                    checked={formulario.compartirCon.agente}
+                    onChange={(e) =>
+                      setFormulario({
+                        ...formulario,
+                        compartirCon: { ...formulario.compartirCon, agente: e.target.checked },
+                      })
+                    }
+                  />
+                  Agente / Broker
+                </label>
+                <label className="block">
+                  <input
+                    type="checkbox"
+                    className="mr-2"
+                    checked={formulario.compartirCon.asegurado}
+                    onChange={(e) =>
+                      setFormulario({
+                        ...formulario,
+                        compartirCon: { ...formulario.compartirCon, asegurado: e.target.checked },
+                      })
+                    }
+                  />
+                  Asegurado
+                </label>
+                <label className="block">
+                  <input
+                    type="checkbox"
+                    className="mr-2"
+                    checked={formulario.compartirCon.coaseguro}
+                    onChange={(e) =>
+                      setFormulario({
+                        ...formulario,
+                        compartirCon: { ...formulario.compartirCon, coaseguro: e.target.checked },
+                      })
+                    }
+                  />
+                  Coaseguro
+                </label>
+                <label className="block">
+                  <input
+                    type="checkbox"
+                    className="mr-2"
+                    checked={formulario.compartirCon.reaseguro}
+                    onChange={(e) =>
+                      setFormulario({
+                        ...formulario,
+                        compartirCon: { ...formulario.compartirCon, reaseguro: e.target.checked },
+                      })
+                    }
+                  />
+                  Reaseguro
+                </label>
+                <label className="block">
+                  <input
+                    type="checkbox"
+                    className="mr-2"
+                    checked={formulario.compartirCon.otros}
+                    onChange={(e) =>
+                      setFormulario({
+                        ...formulario,
+                        compartirCon: { ...formulario.compartirCon, otros: e.target.checked },
+                      })
+                    }
+                  />
+                  Otros
+                </label>
+                {formulario.compartirCon.otros && (
+                  <input
+                    type="text"
+                    placeholder="Especifique..."
+                    className="mt-2 w-full px-3 py-2 border border-gray-300 rounded"
+                    value={formulario.compartirCon.otrosTexto}
+                    onChange={(e) =>
+                      setFormulario({
+                        ...formulario,
+                        compartirCon: {
+                          ...formulario.compartirCon,
+                          otrosTexto: e.target.value,
+                        },
+                      })
+                    }
+                  />
+                )}
+              </div>
+            </div>
+          )}
+        </div>
+      )}
+
+
+
+
+      {seccionActiva === 'usoReporte' && (
+        <div className="bg-gray-50 border rounded p-6 space-y-4">
+          <h3 className="text-xl font-semibold text-red-700 mb-2">Uso del reporte de Inspección</h3>
+
+          {/* Select: Interno o Externo */}
+          <div>
+            <label className="block mb-1 font-medium text-gray-700">Selecciona el uso del reporte:</label>
+            <select
+              value={datosFormulario.usoReporte}
+              onChange={(e) =>
+                setDatosFormulario({ ...datosFormulario, usoReporte: e.target.value })
+              }
+              className="w-full border border-red-500 rounded px-4 py-2 text-gray-700"
+            >
+              <option value="">Selecciona una opción</option>
+              <option value="Interno">Uso Interno</option>
+              <option value="Externo">Uso Externo</option>
+            </select>
+          </div>
+
+          {/* Checkboxes si es Externo */}
+          {datosFormulario.usoReporte === 'Externo' && (
+            <div className="space-y-2 border-t pt-4">
+              <p className="font-semibold text-gray-800">¿Con quién se compartirá el reporte?</p>
+
+              {[
+                { id: 'agente', label: 'Agente / Broker' },
+                { id: 'asegurado', label: 'Asegurado' },
+                { id: 'coaseguro', label: 'Coaseguro' },
+                { id: 'reaseguro', label: 'Reaseguro' },
+                { id: 'otros', label: 'Otros (especifique)' }
+              ].map((op) => (
+                <label key={op.id} className="flex items-center space-x-2 text-gray-700">
+                  <input
+                    type="checkbox"
+                    checked={datosFormulario.compartirCon[op.id]}
+                    onChange={(e) =>
+                      setDatosFormulario({
+                        ...datosFormulario,
+                        compartirCon: {
+                          ...datosFormulario.compartirCon,
+                          [op.id]: e.target.checked
+                        }
+                      })
+                    }
+                    className="text-red-600"
+                  />
+                  <span>{op.label}</span>
+                </label>
+              ))}
+
+              {/* Campo de texto si "otros" está seleccionado */}
+              {datosFormulario.compartirCon.otros && (
+                <div className="mt-2">
+                  <label className="block text-sm text-gray-600">Especificar:</label>
+                  <input
+                    type="text"
+                    value={datosFormulario.compartirCon.otrosTexto}
+                    onChange={(e) =>
+                      setDatosFormulario({
+                        ...datosFormulario,
+                        compartirCon: {
+                          ...datosFormulario.compartirCon,
+                          otrosTexto: e.target.value
+                        }
+                      })
+                    }
+                    className="w-full border border-red-400 rounded px-3 py-2 text-gray-700"
+                    placeholder="Especificar con quién más se compartirá"
+                  />
+                </div>
+              )}
+            </div>
+          )}
+        </div>
+      )}
+
+
+
+
+
+
 
       {seccionActiva === 'ubicaciones' && (
         <form className="space-y-6">
