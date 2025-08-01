@@ -4,6 +4,7 @@ import React, { useState, useEffect } from 'react';
 import { estadosConMunicipios } from '../data/estados_municipios_completo';
 import MapaUbicacion from '../components/MapaUbicacion';
 import { guardarSolicitudEnVisitasProgramadas } from '../utils/guardarSolicitud';
+const API_URL = import.meta.env.VITE_API_URL;
 
 export default function SolicitudVisita() {
   const [seccionActiva, setSeccionActiva] = useState('generales');
@@ -32,6 +33,7 @@ export default function SolicitudVisita() {
     { id: 'generales', label: 'Datos generales' },
     { id: 'contacto', label: 'Datos de contacto' },
     { id: 'interes', label: 'Rubros de interés' },
+    { id: 'usoReporte', label: 'Uso del reporte de Inspección' }, 
     { id: 'ubicaciones', label: 'Ubicaciones a inspeccionar' }
   ];
 

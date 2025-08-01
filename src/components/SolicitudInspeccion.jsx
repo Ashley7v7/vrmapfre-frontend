@@ -139,11 +139,26 @@ export default function SolicitudInspeccion() {
             <p><strong>Representante Comercial:</strong> {mostrarCampo(seleccionada.representante)}</p>
             <p><strong>Correo del Representante:</strong> {mostrarCampo(seleccionada.correoRepresentante)}</p>
             <p><strong>Teléfono del Representante:</strong> {mostrarCampo(seleccionada.telRepresentante)}</p>
+
+            <p><strong>Uso del Reporte:</strong> {mostrarCampo(seleccionada.usoReporte)}</p>
+
+            {seleccionada.usoReporte === 'Externo' && seleccionada.compartirCon && (
+              <div className="ml-4 border-l-2 border-red-500 pl-4 space-y-1">
+                <p className="font-semibold text-red-700">Compartir con:</p>
+                {seleccionada.compartirCon.agente && <p>✔ Agente / Broker</p>}
+                {seleccionada.compartirCon.asegurado && <p>✔ Asegurado</p>}
+                {seleccionada.compartirCon.coaseguro && <p>✔ Coaseguro</p>}
+                {seleccionada.compartirCon.reaseguro && <p>✔ Reaseguro</p>}
+                {seleccionada.compartirCon.otros && (
+                  <p>✔ Otros: {mostrarCampo(seleccionada.compartirCon.otrosTexto)}</p>
+                )}
+              </div>
+            )}
           </div>
         )}
 
 
-
+        
 
 
 
