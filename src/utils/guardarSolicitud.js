@@ -45,11 +45,15 @@ export async function guardarSolicitudEnVisitasProgramadas(solicitudForm, ubicac
 
     console.log('📦 JSON enviado al backend:', JSON.stringify({ visitas }, null, 2));
 
-    const response = await fetch('http://localhost:3000/api/visitas-multiples', {
+    const API_URL = import.meta.env.VITE_API_URL;
+
+    const response = await fetch(`${API_URL}/api/visitas-multiples`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ visitas })
+      body: JSON.stringify({ visitas }),
+      credentials: 'include'
     });
+
 
     if (!response.ok) {
       throw new Error('Error al registrar visitas en la base de datos');
