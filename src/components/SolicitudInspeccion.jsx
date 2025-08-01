@@ -10,7 +10,7 @@ export default function SolicitudInspeccion() {
   const [razonesUnicas, setRazonesUnicas] = useState([]);
 
   useEffect(() => {
-    fetch('http://localhost:3000/api/solicitudes')
+    fetch(`${import.meta.env.VITE_API_URL}/api/solicitudes`)
       .then(res => res.json())
       .then(data => {
         setSolicitudes(data);
