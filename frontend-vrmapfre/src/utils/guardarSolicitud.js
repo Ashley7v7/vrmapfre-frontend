@@ -1,5 +1,6 @@
 console.log('🛠 UsoReporte:', datosFormulario.usoReporte);
 console.log('🛠 CompartirCon:', datosFormulario.compartirCon);
+console.log('🚀 Enviando usoReporte y compartirCon:', usoReporte, compartirCon);
 
 
 export async function guardarSolicitudEnVisitasProgramadas(solicitudForm, ubicaciones, contacto, rubrosInteres,   usoReporte,  compartirCon) {
@@ -13,7 +14,7 @@ export async function guardarSolicitudEnVisitasProgramadas(solicitudForm, ubicac
 
     const visitas = ubicaciones.map((ubic) => ({
       suscriptor,
-      asegurado: solicitudForm.razonSocial || 'No especificado',
+      asegurado: solicitudForm.razonSocial || 'No especificado',  // aquí renombras
       direccion: ubic.direccion || '',
       ciudad: ubic.municipio || '',
       municipio: ubic.municipio || '',
