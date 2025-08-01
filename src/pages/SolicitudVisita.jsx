@@ -673,7 +673,7 @@ export default function SolicitudVisita() {
 
       {seccionActiva === 'usoReporte' && (
         <div className="bg-gray-50 border rounded p-6 space-y-4">
-          <h3 className="text-xl font-semibold text-red-700 mb-2">Uso del reporte de Inspección</h3>
+          <h3 className="text-xl font-semibold text-gray-700 mb-2">Uso del reporte de Inspección</h3>
 
           {/* Select: Interno o Externo */}
           <div>
@@ -683,7 +683,7 @@ export default function SolicitudVisita() {
               onChange={(e) =>
                 setDatosFormulario({ ...datosFormulario, usoReporte: e.target.value })
               }
-              className="w-full border border-red-500 rounded px-4 py-2 text-gray-700"
+              className="w-full border border-gray-400 rounded px-4 py-2 text-gray-800"
             >
               <option value="">Selecciona una opción</option>
               <option value="Interno">Uso Interno</option>
@@ -694,7 +694,7 @@ export default function SolicitudVisita() {
           {/* Checkboxes si es Externo */}
           {datosFormulario.usoReporte === 'Externo' && (
             <div className="space-y-2 border-t pt-4">
-              <p className="font-semibold text-gray-800">¿Con quién se compartirá el reporte?</p>
+              <p className="font-semibold text-gray-700">¿Con quién se compartirá el reporte?</p>
 
               {[
                 { id: 'agente', label: 'Agente / Broker' },
@@ -716,7 +716,7 @@ export default function SolicitudVisita() {
                         }
                       })
                     }
-                    className="text-red-600"
+                    className="accent-gray-700"
                   />
                   <span>{op.label}</span>
                 </label>
@@ -738,7 +738,7 @@ export default function SolicitudVisita() {
                         }
                       })
                     }
-                    className="w-full border border-red-400 rounded px-3 py-2 text-gray-700"
+                    className="w-full border border-gray-400 rounded px-3 py-2 text-gray-800"
                     placeholder="Especificar con quién más se compartirá"
                   />
                 </div>
@@ -747,6 +747,7 @@ export default function SolicitudVisita() {
           )}
         </div>
       )}
+
 
 
 
