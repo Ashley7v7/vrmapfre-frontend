@@ -1,10 +1,10 @@
-console.log('🛠 UsoReporte:', datosFormulario.usoReporte);
-console.log('🛠 CompartirCon:', datosFormulario.compartirCon);
-console.log('🚀 Enviando usoReporte y compartirCon:', usoReporte, compartirCon);
-
-
 export async function guardarSolicitudEnVisitasProgramadas(solicitudForm, ubicaciones, contacto, rubrosInteres,   usoReporte,  compartirCon) {
   try {
+
+    console.log('🛠 UsoReporte:', solicitudForm.usoReporte);
+    console.log('🛠 CompartirCon:', solicitudForm.compartirCon);
+    console.log('🚀 Enviando usoReporte y compartirCon:', usoReporte, compartirCon);
+
     const fechaHoy = new Date().toISOString();
     const suscriptor = localStorage.getItem('nombreCompleto') || 'Sin nombre';
     if (!compartirCon || typeof compartirCon !== 'object') {

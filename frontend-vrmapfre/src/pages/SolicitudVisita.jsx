@@ -50,6 +50,7 @@ export default function SolicitudVisita() {
       otros: false,
       otrosTexto: ''
     }
+    
   });
 
   useEffect(() => {
@@ -69,16 +70,6 @@ export default function SolicitudVisita() {
   });
 
   const [rubrosInteres, setRubrosInteres] = useState('');
-
-  const [usoReporte, setUsoReporte] = useState(''); // interno o externo
-  const [compartirCon, setCompartirCon] = useState({
-    agente: false,
-    asegurado: false,
-    coaseguro: false,
-    reaseguro: false,
-    otros: false,
-    otrosTexto: ''
-  });
 
 
   const agregarUbicacion = () => {
@@ -150,8 +141,11 @@ export default function SolicitudVisita() {
     }
 console.log('🛠 UsoReporte:', datosFormulario.usoReporte);
 console.log('🛠 CompartirCon:', datosFormulario.compartirCon);
+console.log('🚀 Enviando usoReporte y compartirCon:', datosFormulario.usoReporte, datosFormulario.compartirCon);
+
 
     await guardarSolicitudEnVisitasProgramadas(
+      
       datosFormulario,
       ubicaciones,
       datosContacto,

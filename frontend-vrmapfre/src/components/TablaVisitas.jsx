@@ -310,14 +310,37 @@ export default function TablaVisitas() {
                             : '-'}
                         </span>
                       )
-                    ) : key === 'fechaSolicitud' ? (
-                      new Date(visita[key]).toISOString().split('T')[0]
+                                    ) : key === 'ingeniero' && rolUsuario === 'administrador' ? (
+                      <select
+                        value={visita.ingeniero || ''}
+                        onChange={async (e) => {
+                          const nuevoIngeniero = e.target.value;
+                          try {
+                            const res = await fetch(`${API_URL}/api/visitas/${visita.id}`, {
+                              method: 'PUT',
+                              headers: { 'Content-Type': 'application/json' },
+                              body: JSON.stringify({ ingeniero: nuevoIngeniero })
+                            });
+                            if (!res.ok) throw new Error('Error al actualizar ingeniero');
+
+                            setVisitas(prev =>
+                              prev.map(v => v.id === visita.id ? { ...v, ingeniero: nuevoIngeniero } : v)
+                            );
+                          } catch (error) {
+                            console.error('Error al cambiar ingeniero:', error);
+                            alert('No se pudo actualizar el ingeniero.');
+                          }
+                        }}
+                        className="border rounded px-2 py-1"
+                      >
+                        <option value="">-- Seleccionar --</option>
+                        {ingenieros.map(nombre => (
+                          <option key={nombre} value={nombre}>{nombre}</option>
+                        ))}
+                      </select>
                     ) : (
                       visita[key] || '-'
                     )}
-
-
-
                   </td>
                 ))}
                 <td className="border px-4 py-2 text-center">
