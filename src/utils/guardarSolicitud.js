@@ -12,7 +12,7 @@ export async function guardarSolicitudEnVisitasProgramadas(solicitudForm, ubicac
 
 
     const visitas = ubicaciones.map((ubic) => ({
-      suscriptor: solicitudForm.suscriptorSolicita || 'Sin nombre',
+      suscriptor: solicitudForm.suscriptor || 'Sin nombre',
       asegurado: solicitudForm.razonSocial || 'No especificado',  // aquí renombras
       direccion: ubic.direccion || '',
       ciudad: ubic.municipio || '',
