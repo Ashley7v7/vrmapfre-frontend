@@ -5,6 +5,9 @@ import SolicitudVisita from './SolicitudVisita';
 import TablaVisitas from '../components/TablaVisitas';
 import Notificacion from '../components/Notificacion';
 import toast from 'react-hot-toast';
+import MisSolicitudes from './MisSolicitudes';
+
+
 
 export default function SuscriptorDashboard() {
   const [activeTab, setActiveTab] = useState('inicio');
@@ -146,19 +149,22 @@ export default function SuscriptorDashboard() {
             <img src={mapfreLogo} alt="MAPFRE" className="w-32" />
           </div>
           <nav className="flex flex-col space-y-1 px-4">
-            {['inicio', 'reportes', 'solicitud', 'visitas'].map((tab) => (
+            {['inicio', 'reportes', 'solicitud', 'visitas', 'misSolicitudes'].map((tab) => (
               <button
                 key={tab}
                 className={`text-left px-4 py-2 rounded ${activeTab === tab ? 'bg-gray-600' : ''}`}
                 onClick={() => setActiveTab(tab)}
               >
-                {tab === 'inicio'
-                  ? 'Inicio'
-                  : tab === 'reportes'
-                  ? 'Reportes'
-                  : tab === 'solicitud'
-                  ? 'Solicitud de visita'
-                  : 'Visitas programadas'}
+               {tab === 'inicio'
+                ? 'Inicio'
+                : tab === 'reportes'
+                ? 'Reportes'
+                : tab === 'solicitud'
+                ? 'Solicitud de visita'
+                : tab === 'visitas'
+                ? 'Visitas programadas'
+                : 'Mis Solicitudes'}
+
               </button>
             ))}
           </nav>
@@ -193,7 +199,13 @@ export default function SuscriptorDashboard() {
         )}
         {activeTab === 'solicitud' && <SolicitudVisita />}
         {activeTab === 'visitas' && <TablaVisitas />}
+        {activeTab === 'misSolicitudes' && <MisSolicitudes />}
       </main>
+
+      
+
+
+      
     </div>
   );
 }
