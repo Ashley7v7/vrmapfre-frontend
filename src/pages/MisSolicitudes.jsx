@@ -14,17 +14,20 @@ export default function MisSolicitudes() {
       axios
         .get(`${API_URL}/api/mis-solicitudes/${correo}`)
         .then((res) => {
-          setSolicitudes(res.data);
+          // 📌 Asegurar que siempre guardamos un array
+          setSolicitudes(Array.isArray(res.data) ? res.data : []);
         })
         .catch((err) => {
           console.error("Error al cargar mis solicitudes:", err);
+          setSolicitudes([]); // En caso de error, dejamos array vacío
         })
         .finally(() => setCargando(false));
+    } else {
+      setCargando(false);
     }
   }, [correo]);
 
   const editarSolicitud = (solicitud) => {
-    // 📌 Aquí podrías navegar a tu formulario de edición con datos precargados
     localStorage.setItem("solicitudEditar", JSON.stringify(solicitud));
     window.location.href = "/editar-solicitud"; // Cambia por tu ruta real
   };
@@ -49,25 +52,26 @@ export default function MisSolicitudes() {
             </tr>
           </thead>
           <tbody>
-            {solicitudes.map((sol) => (
-              <tr key={sol.id}>
-                <td className="border p-2">{sol.id}</td>
-                <td className="border p-2">{sol.asegurado}</td>
-                <td className="border p-2">{sol.estado}</td>
-                <td className="border p-2">{sol.estatus}</td>
-                <td className="border p-2">
-                  {new Date(sol.fechaSolicitud).toLocaleDateString()}
-                </td>
-                <td className="border p-2 text-center">
-                  <button
-                    onClick={() => editarSolicitud(sol)}
-                    className="bg-blue-600 text-white px-3 py-1 rounded hover:bg-blue-700"
-                  >
-                    ✏ Editar
-                  </button>
-                </td>
-              </tr>
-            ))}
+            {Array.isArray(solicitudes) &&
+              solicitudes.map((sol) => (
+                <tr key={sol.id}>
+                  <td className="border p-2">{sol.id}</td>
+                  <td className="border p-2">{sol.asegurado}</td>
+                  <td className="border p-2">{sol.estado}</td>
+                  <td className="border p-2">{sol.estatus}</td>
+                  <td className="border p-2">
+                    {new Date(sol.fechaSolicitud).toLocaleDateString()}
+                  </td>
+                  <td className="border p-2 text-center">
+                    <button
+                      onClick={() => editarSolicitud(sol)}
+                      className="bg-blue-600 text-white px-3 py-1 rounded hover:bg-blue-700"
+                    >
+                      ✏ Editar
+                    </button>
+                  </td>
+                </tr>
+              ))}
           </tbody>
         </table>
       )}
