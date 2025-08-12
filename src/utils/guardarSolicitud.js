@@ -6,14 +6,13 @@ export async function guardarSolicitudEnVisitasProgramadas(solicitudForm, ubicac
     console.log('🚀 Enviando usoReporte y compartirCon:', usoReporte, compartirCon);
 
     const fechaHoy = new Date().toISOString();
-    const suscriptor = localStorage.getItem('nombreCompleto') || 'Sin nombre';
     if (!compartirCon || typeof compartirCon !== 'object') {
       compartirCon = {};
     }
 
 
     const visitas = ubicaciones.map((ubic) => ({
-      suscriptor,
+      suscriptor: solicitudForm.suscriptorSolicita || 'Sin nombre',
       asegurado: solicitudForm.razonSocial || 'No especificado',  // aquí renombras
       direccion: ubic.direccion || '',
       ciudad: ubic.municipio || '',
