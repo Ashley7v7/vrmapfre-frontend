@@ -143,6 +143,13 @@ console.log('🛠 UsoReporte:', datosFormulario.usoReporte);
 console.log('🛠 CompartirCon:', datosFormulario.compartirCon);
 console.log('🚀 Enviando usoReporte y compartirCon:', datosFormulario.usoReporte, datosFormulario.compartirCon);
 
+      if (!datosFormulario.usoReporte) {
+        alert('Por favor selecciona el uso del reporte (Interno o Externo)');
+        return;
+      }
+
+
+
 
     await guardarSolicitudEnVisitasProgramadas(
       
